@@ -26,7 +26,7 @@
 <body>
 <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Carousel</a>
+        <a class="navbar-brand" href="{{ path('default') }}">Logboek</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -38,10 +38,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('product_index') }}">Product</a>
                 </li>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CHAUFFEUR') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('user_index') }}">Users</a>
+                        <a class="nav-link" href="{{ path('logboek_index') }}">Logboek</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('truck_index') }}">Truck</a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN')%}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('user_index') }}">User</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ul>
             <ul class="navbar-nav">
@@ -68,7 +76,7 @@
 </header>
 
 <main role="main">
-    <div class="container">
+    <div class="container pt-5">
 
         {% block fos_user_content %}{% endblock fos_user_content %}
 
@@ -81,6 +89,7 @@
 
     <!-- FOOTER -->
     <footer class="container">
+        <hr>
         <p class="float-right"><a href="#">Back to top</a></p>
         <p>&copy; 2017-2019 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
     </footer>

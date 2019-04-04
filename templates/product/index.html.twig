@@ -3,6 +3,7 @@
 {% block title %}Product index{% endblock %}
 
 {% block body %}
+<div style="overflow: auto">
     <h1>Product index</h1>
 
     <table class="table">
@@ -38,6 +39,7 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
     {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('product_new') }}">Create new</a>
     {% endif %}

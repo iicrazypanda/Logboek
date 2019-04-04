@@ -3,11 +3,12 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <div style="overflow: auto">
-    <h1>Users</h1>
-        <table class="table">
+    <h1>User index</h1>
+    <div class="table" style="overflow: auto">
+        <table>
             <thead>
             <tr>
+                <th>Id</th>
                 <th>Username</th>
                 <th>UsernameCanonical</th>
                 <th>Email</th>
@@ -19,29 +20,40 @@
                 <th>ConfirmationToken</th>
                 <th>PasswordRequestedAt</th>
                 <th>Roles</th>
-                <th>Id</th>
                 <th>actions</th>
             </tr>
             </thead>
             <tbody>
             {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.usernameCanonical }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.emailCanonical }}</td>
-                    <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
-                    <td>{{ user.salt }}</td>
-                    <td>{{ user.password }}</td>
-                    <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ user.confirmationToken }}</td>
-                    <td>{{ user.passwordRequestedAt ? user.passwordRequestedAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
-                    <td>{{ user.id }}</td>
-                    <td>
-                        <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                        <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-                    </td>
+                {% if 'ROLE_ADMIN' in user.roles %}
+                    <tr class="bg-danger text-white">
+                {% elseif 'ROLE_CHAUFFEUR' in user.roles%}
+                    <tr class="bg-success text-white">
+                {% else %}
+                    <tr class="bg-light text-secondary">
+                {% endif %}
+                <td class="rounded-left">{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.usernameCanonical }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.emailCanonical }}</td>
+                <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
+                <td>{{ user.salt }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.confirmationToken }}</td>
+                <td>{{ user.passwordRequestedAt ? user.passwordRequestedAt|date('Y-m-d H:i:s') : '' }}</td>
+                {% if 'ROLE_ADMIN' in user.roles %}
+                    <td class="bg-danger">{{ user.roles ? user.roles|join(' ') : '' }}</td>
+                {% else %}
+                    <td>{{ user.roles ? user.roles|join(' ') : '' }}</td>
+                {% endif %}
+                <td class="bg-secondary rounded-right">
+                    <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-primary border border-white my-1 w-100">show</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-primary border border-white my-1 w-100">edit</a>
+                    <a href="{{ path('user_edit_role_chauffeur', {'id': user.id}) }}" class="btn btn-success border border-white my-1 w-100">chauffeur</a>
+                    <a href="{{ path('user_edit_role_admin', {'id': user.id}) }}" class="btn btn-danger border border-white my-1 w-100">admin</a>
+                </td>
                 </tr>
             {% else %}
                 <tr>
@@ -51,5 +63,5 @@
             </tbody>
         </table>
     </div>
-        <a href="{{ path('user_new') }}">Create new</a>
+    <a href="{{ path('user_new') }}" class="btn btn-primary mt-3">Create new</a>
 {% endblock %}

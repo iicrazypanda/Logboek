@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Logboek index{% endblock %}
+
+{% block body %}
+<div style="overflow: auto">
+    <h1>Logboek index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Briefnr</th>
+                <th>Datum</th>
+                <th>Kubs</th>
+                <th>Laadpunt</th>
+                <th>Vertrektijd</th>
+                <th>Eindpunt</th>
+                <th>Evenement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for logboek in logboeks %}
+            <tr>
+                <td>{{ logboek.id }}</td>
+                <td>{{ logboek.briefnr }}</td>
+                <td>{{ logboek.datum ? logboek.datum|date('Y-m-d') : '' }}</td>
+                <td>{{ logboek.kubs }}</td>
+                <td>{{ logboek.laadpunt }}</td>
+                <td>{{ logboek.vertrektijd ? logboek.vertrektijd|date('H:i:s') : '' }}</td>
+                <td>{{ logboek.eindpunt }}</td>
+                <td>{{ logboek.evenement }}</td>
+                <td>
+                    <a href="{{ path('logboek_show', {'id': logboek.id}) }}">show</a>
+                    <a href="{{ path('logboek_edit', {'id': logboek.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <a href="{{ path('logboek_new') }}">Create new</a>
+{% endblock %}

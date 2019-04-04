@@ -84,6 +84,62 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/edit/roleChauffeur", name="user_edit_role_chauffeur", methods={"GET","POST"})
+     */
+    public function roleChauffeur($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No User found for id '.$id
+            );
+        }
+
+        if(in_array("ROLE_CHAUFFEUR", $user->getRoles())) {
+            $user->removeRole("ROLE_CHAUFFEUR");
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+        else{
+            $user->addRole("ROLE_CHAUFFEUR");
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+    }
+
+    /**
+     * @Route("/{id}/edit/roleAdmin", name="user_edit_role_admin", methods={"GET","POST"})
+     */
+    public function roleAdmin($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No User found for id '.$id
+            );
+        }
+
+        if(in_array("ROLE_ADMIN", $user->getRoles())) {
+            $user->removeRole("ROLE_ADMIN");
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+        else{
+            $user->addRole("ROLE_ADMIN");
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+    }
+
+    /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
